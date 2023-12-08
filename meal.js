@@ -39,7 +39,20 @@ function addMeal(mealData)
                             <button class="fav-btn">
                                 <i class="fas fa-heart"></i>
                             </button>
-                        </div>`
+                        </div>`;
+
+    let favoriteButton = meal.querySelector(".fav-btn");
+    favoriteButton.addEventListener("click", ()=>{
+         if(favoriteButton.classList.contains('active'))
+         {
+            favoriteButton.classList.remove('active');
+         }  
+         else 
+         {
+            favoriteButton.classList.add('active');
+         } 
+
+        })
 
     mealsElement.appendChild(meal);
 }
