@@ -80,3 +80,40 @@ function getMealsFromLocalStorage()
     return mealIds === null? [] : mealIds;
 
 }
+
+async function updateFavoriteMeals()
+{
+    const mealsIds = getMealsFromLocalStorage();
+    for (let i=0; i<mealIds.length; i++)
+    {
+        let tmpMeal = await getMealByID(mealIds[i]);
+    }
+}
+
+async function getMealbyID(id)
+{
+    const resp = await fetch('https://www.themealdb.com/api/json/v1/1/lookup.php?i=' + id);
+    
+    const respData = await resp.json();
+    
+    const meal = respData.meals[0];
+    //console.log(meal);
+
+    return meal;
+
+
+    //var2
+    
+    /*
+    const resp = fetch('https://www.themealdb.com/api/json/v1/1/lookup.php?i=' + id);
+    resp.then( (resp) => {
+        const data = resp.json();
+        return data;
+    })
+    .then(data => {
+        const meal = data.meals[0];
+        return meal;
+    })
+
+    */
+}
