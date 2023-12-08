@@ -9,10 +9,12 @@
 
 
 const mealsElement = document.getElementById("meals");
+const favoritesElement = document.querySelector('.favorites');
 
-GetRandomMeal();
+getRandomMeal();
+updateFavoriteMeals();
 
-async function GetRandomMeal()
+async function getRandomMeal()
 {
     const resp = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
     //console.log(resp);
@@ -83,10 +85,12 @@ function getMealsFromLocalStorage()
 
 async function updateFavoriteMeals()
 {
+    favoritesElement.innerHTML = "";
     const mealsIds = getMealsFromLocalStorage();
     for (let i=0; i<mealIds.length; i++)
     {
         let tmpMeal = await getMealByID(mealIds[i]);
+        addMealToFavorites(tmpMeal);
     }
 }
 
@@ -103,7 +107,7 @@ async function getMealbyID(id)
 
 
     //var2
-    
+
     /*
     const resp = fetch('https://www.themealdb.com/api/json/v1/1/lookup.php?i=' + id);
     resp.then( (resp) => {
@@ -117,3 +121,22 @@ async function getMealbyID(id)
 
     */
 }
+
+function addMealToFavorites(mealData)
+{
+    const favoriteMeal = document.createElement('li');
+    favoriteMeal.innerHTML = `
+                    <img id="fav-img" 
+                        src="${mealData.strMealThumb}" 
+                        alt="${mealData.strMeal}">
+                    <span>${mealData.strMeal}</span>
+                    <button class="clear"><i class="fas fa-window-close"></i></button>`;
+
+    const clearBtn = favoriteMeal.querySelector('.clear');
+    clearBtn.addEventListener("click", ()=> {
+        removeMealFromLocalStorage(mealData.idMeal);
+        updateFavoriteMeals();
+    })
+    favoritesElement.appendChild(favoriteMeal);
+}
+
