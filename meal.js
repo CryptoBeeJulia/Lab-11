@@ -34,7 +34,7 @@ function addMeal(mealData)
 
     meal.innerHTML = ` <div class="meal-header">
                             <span class="random">Meal of the Day</span>
-                            <img src="${mealData.strMealThumb}" alt="${mealData.strMeal}">
+                            <img crossorigin='anonymous' src="${mealData.strMealThumb}" alt="${mealData.strMeal}">
                         </div>
                         <div class="meal-body">
                             <h3>${mealData.strMeal}</h3>
@@ -87,7 +87,7 @@ async function updateFavoriteMeals()
 {
     favoritesElement.innerHTML = "";
     const mealsIds = getMealsFromLocalStorage();
-    for (let i=0; i<mealIds.length; i++)
+    for (let i=0; i<mealsIds.length; i++)
     {
         let tmpMeal = await getMealByID(mealIds[i]);
         addMealToFavorites(tmpMeal);
@@ -126,7 +126,7 @@ function addMealToFavorites(mealData)
 {
     const favoriteMeal = document.createElement('li');
     favoriteMeal.innerHTML = `
-                    <img id="fav-img" 
+                    <img crossorigin='anonymous' id="fav-img" 
                         src="${mealData.strMealThumb}" 
                         alt="${mealData.strMeal}">
                     <span>${mealData.strMeal}</span>
