@@ -199,5 +199,39 @@ function OpenMealDetailPage(mealData)
     window.open("details.html?mealId=" + mealData.idMeal, "_self");
 }
 
+function initDetailsPage()
+{
+    const urlParams = new URLSearchParams(window.location.search);
+    //console.log(urlParams);
+    const mealId = urlParams.get('mealId');
+    //console.log(mealId);
 
+    showMealDetails(mealId);
+
+}
+
+async function showMealDetails(mealId)
+{
+    let tmpMeal = await getMealByID(mealId);
+    console.log(tmpMeal);
+
+    const mealDetailsContainer = document.querySelector('.meal-container');
+
+    mealDetailsContainer.innerHTML = 
+    `<a href="meal.html">Home</a>
+            <div class="meal-info">
+                <div>
+                    <h1>${tmpMeal.strMeal}</h1>
+                    <img crossorigin='anonymous' src="${tmpMeal.strMealThumb}" alt="${tmpMeal.strMeal}">
+                </div>
+                <div>
+                    <p>${tmpMeal.strInstructions}</p>
+                        <ul>
+                            <li>Ingredient /measure</li>
+                            <li>Ingredient /measure</li>
+                            <li>Ingredient /measure</li>
+                        </ul>
+                </div>
+            </div>`;
+}
 
