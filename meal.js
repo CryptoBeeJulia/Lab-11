@@ -13,24 +13,28 @@ const favoritesElement = document.querySelector('.favorites');
 const searchBtn = document.querySelector('#search');
 const searchTerm = document.querySelector('#search-term');
 
-getRandomMeal();
-updateFavoriteMeals();
+function initMain()
+{
 
-searchBtn.addEventListener('click', async ()=> {
-    const searchWord = searchTerm.value;
-    const meals = await  getMealsBySearch(searchWord);
+    getRandomMeal();
+    updateFavoriteMeals();
 
-    mealsElement.innerHTML = "";
+    searchBtn.addEventListener('click', async ()=> {
+        const searchWord = searchTerm.value;
+        const meals = await  getMealsBySearch(searchWord);
 
-    if(meals)
-    {
-        for(let i = 0; i < meals.length; i++)
+        mealsElement.innerHTML = "";
+
+        if(meals)
         {
-            addMeal(meals[i]);
+            for(let i = 0; i < meals.length; i++)
+            {
+                addMeal(meals[i]);
+            }
         }
-    }
 
-});
+    });
+}
 
 async function getRandomMeal()
 {
@@ -80,6 +84,13 @@ function addMeal(mealData, random = false)
         })
 
     mealsElement.appendChild(meal);
+
+
+    const mealHeader = meal.querySelector(".meal-header");
+    mealHeader.addEventListener("click", () => {
+    OpenMealDetailPage(mealData);
+    });
+
 }
 
 function addMealToLocalStorage(mealId)
@@ -117,7 +128,7 @@ async function updateFavoriteMeals()
     }
 }
 
-async function getMealbyID(id)
+async function getMealByID(id)
 {
     const resp = await fetch('https://www.themealdb.com/api/json/v1/1/lookup.php?i=' + id);
     
@@ -159,13 +170,15 @@ function addMealToFavorites(mealData)
     clearBtn.addEventListener("click", ()=> {
         removeMealFromLocalStorage(mealData.idMeal);
         updateFavoriteMeals();
-    })
+    });
     favoritesElement.appendChild(favoriteMeal);
+
+    const favId = favoriteMeal.querySelector("#fav-img");
+    favId.addEventListener("click", () => {
+        OpenMealDetailPage(mealData);
+    })
 }
 
-
-// video 3 - problem: fav meals are not added to the fav section on top
-// console - getMealById is not defined in updateFavoriteMeals()
 
 
 async function getMealsBySearch(term)
@@ -179,6 +192,11 @@ async function getMealsBySearch(term)
     console.log(meals);
     return meals;
 
+}
+
+function OpenMealDetailPage(mealData)
+{
+    window.open("details.html?mealId=" + mealData.idMeal, "_self");
 }
 
 
